@@ -6,7 +6,7 @@
 /*   By: mmouhssi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/14 11:04:32 by mmouhssi          #+#    #+#             */
-/*   Updated: 2016/01/10 21:03:38 by mmouhssi         ###   ########.fr       */
+/*   Updated: 2016/01/14 14:59:47 by mmouhssi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char		*ft_content(int fd, char *str, int *r, int *i)
 	if (str[*i] != '\n')
 	{
 		*r = read(fd, buff, BUFF_SIZE);
-		while (r > 0)
+		while (*r > 0)
 		{
 			str = ft_strjoin(str, buff);
 			*i = 0;
@@ -81,6 +81,8 @@ int			get_next_line(int const fd, char **line)
 	static t_list		*lst;
 	t_list			*list;
 
+	if (!line)
+		return (-1);
 	ft_list(&lst, &list, fd);
 	str = (char *)list->content;
 	str = ft_content(fd, str, &r, &i);
@@ -92,7 +94,7 @@ int			get_next_line(int const fd, char **line)
 	list->content = (void *)str;
 	if (r == -1)
 		return (-1);
-	else if (i > 0)
+	if (i > 0 || str[i] == '\n')
 		return (1);
 	return (0);
 }

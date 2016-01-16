@@ -6,7 +6,7 @@
 /*   By: mmouhssi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/14 11:04:32 by mmouhssi          #+#    #+#             */
-/*   Updated: 2016/01/14 14:59:47 by mmouhssi         ###   ########.fr       */
+/*   Updated: 2016/01/16 14:30:19 by mmouhssi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,31 @@ void	ft_list(t_list **lst, t_list **list, int fd)
 	}
 }
 
-char		*ft_content(int fd, char *str, int *r, int *i)
+char		*ft_content(int fd, char *str, char *str2, int *i)
 {
 	char buff[BUFF_SIZE + 1];
+	int r;
 
 	*i = 0;
-	*r = 0;
 	while (str[*i] != '\n' && str[*i] != '\0')
 		(*i)++;
 	ft_bzero(buff, BUFF_SIZE + 1);
 	if (str[*i] != '\n')
 	{
-		*r = read(fd, buff, BUFF_SIZE);
-		while (*r > 0)
+		while ((r = read(fd, buff, BUFF_SIZE)) > 0)
 		{
-			str = ft_strjoin(str, buff);
+			str2 = str;
+			str = ft_strjoin(str2, buff);
+			free(str2);
 			*i = 0;
 			while (str[*i] != '\n' && str[*i] != '\0')
 				(*i)++;
 			if (str[*i] == '\n')
 				break ;
 			ft_bzero(buff, BUFF_SIZE);
-			*r = read(fd, buff, BUFF_SIZE);
 		}
-		if (*r < 0)
-			*r = -1;
+		if (r < 0)
+			*i = -1;
 	}
 	return (str);
 }
@@ -77,24 +77,35 @@ int			get_next_line(int const fd, char **line)
 {
 	char			*str;
 	int			i;
-	int			r;
+	char			*str2;
 	static t_list		*lst;
 	t_list			*list;
 
+	str2 = NULL;
 	if (!line)
 		return (-1);
 	ft_list(&lst, &list, fd);
-	str = (char *)list->content;
-	str = ft_content(fd, str, &r, &i);
+	str = ft_content(fd, (char *)list->content, str2, &i);
+	if (i == -1)
+		return (-1);
 	*line = (char *)malloc(i + 1);
 	ft_bzero(*line, i + 1);
 	ft_strncat(*line, str, i);
-	if (str[0] != '\0')
-		str = ft_strsub(str, i + 1, ft_strlen(str) - i);
+	str2 = str;
+	if (str[0] == '\n')
+	{
+		str = ft_strsub(str2, i + 1, ft_strlen(str) - i);
+		free(str2);
+		list->content = (void *)str;
+		return (1);
+	}
+	else if (str[0] != '\0')
+	{
+		str = ft_strsub(str2, i + 1, ft_strlen(str) - i);
+		free(str2);
+	}
 	list->content = (void *)str;
-	if (r == -1)
-		return (-1);
-	if (i > 0 || str[i] == '\n')
+	if (i > 0)
 		return (1);
 	return (0);
 }
@@ -132,4 +143,7 @@ int			get_next_line(int const fd, char **line)
 	ft_putendl_tab(tab);
 	ft_putendl("fichier 2");
 	ft_putendl_tab(tab2);
+	while (1)
+	{
+	}
 }*/

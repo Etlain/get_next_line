@@ -6,7 +6,7 @@
 /*   By: mmouhssi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/14 11:04:32 by mmouhssi          #+#    #+#             */
-/*   Updated: 2016/01/10 02:10:41 by mmouhssi         ###   ########.fr       */
+/*   Updated: 2016/01/16 16:47:22 by mmouhssi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ int			get_next_line(int const fd, char **line)
 {
 	char			buff[BUFF_SIZE + 1];
 	static char		*str;
+	char			*str2;
 	int			i;
-
+	int			r;
+	
+	if (!line || fd < 0)
+		return (-1);
 	if (!str)
 	{
 		str = (char *)malloc(sizeof(char) * BUFF_SIZE + 1);
@@ -34,22 +38,38 @@ int			get_next_line(int const fd, char **line)
 	ft_bzero(buff, BUFF_SIZE + 1);
 	if (str[i] != '\n')
 	{
-		while (read(fd, buff, BUFF_SIZE) != 0)
+		while ((r = read(fd, buff, BUFF_SIZE)) != 0)
 		{
 			i = 0;
-			str = ft_strjoin(str, buff);
+			str2 = str;
+			str = ft_strjoin(str2, buff);
+			free(str2);
 			while (str[i] != '\n' && str[i] != '\0')
 				i++;
 			if (str[i] == '\n')
 				break ;
 			ft_bzero(buff, BUFF_SIZE);
 		}
+		if (r < 0)
+			return (-1);
 	}
 	*line = (char *)malloc(i + 1);
 	ft_bzero(*line, i + 1);
 	ft_strncat(*line, str, i);
+	str2 = str;
+	if (str[0] == '\n')
+	{
+		str = ft_strsub(str2, i + 1, ft_strlen(str) - i);
+		free(str2);
+		return (1);
+	}
 	if (str[0] != '\0')
-		str = ft_strsub(str, i + 1, ft_strlen(str) - i);
+	{
+		str = ft_strsub(str2, i + 1, ft_strlen(str) - i);
+		free(str2);
+	}
+	if (i > 0)
+		return (1);
 	return (0);
 }
 /*

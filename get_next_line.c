@@ -6,7 +6,7 @@
 /*   By: mmouhssi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/14 11:04:32 by mmouhssi          #+#    #+#             */
-/*   Updated: 2016/01/16 16:57:37 by mmouhssi         ###   ########.fr       */
+/*   Updated: 2016/01/18 12:01:42 by mmouhssi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void		ft_list(t_list **lst, t_list **list, int fd)
 	if (!*lst)
 	{
 		*list = ft_lstnew(NULL, 0);
-		(*list)->content_size = (size_t) fd;
+		(*list)->content_size = (size_t)fd;
 		*lst = *list;
 	}
 	else
@@ -30,7 +30,7 @@ static void		ft_list(t_list **lst, t_list **list, int fd)
 		{
 			*list = ft_lstnew(NULL, 0);
 			ft_lstadd(&(*lst), *list);
-			(*list)->content_size = (size_t) fd;
+			(*list)->content_size = (size_t)fd;
 		}
 	}
 	if ((*list)->content == NULL)
@@ -43,7 +43,7 @@ static void		ft_list(t_list **lst, t_list **list, int fd)
 static char		*ft_content(int fd, char *str, char *str2, int *i)
 {
 	char	buff[BUFF_SIZE + 1];
-	int	r;
+	int		r;
 
 	*i = 0;
 	while (str[*i] != '\n' && str[*i] != '\0')
@@ -90,12 +90,12 @@ static int		rest_in_lst(t_list *list, char **str, int i)
 	return (0);
 }
 
-int			get_next_line(int const fd, char **line)
+int				get_next_line(int const fd, char **line)
 {
 	char			*str;
-	int			i;
+	int				i;
 	char			*str2;
-	static t_list		*lst;
+	static t_list	*lst;
 	t_list			*list;
 
 	str2 = NULL;

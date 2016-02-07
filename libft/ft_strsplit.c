@@ -6,7 +6,7 @@
 /*   By: mmouhssi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/29 14:10:41 by mmouhssi          #+#    #+#             */
-/*   Updated: 2015/12/08 19:15:28 by mmouhssi         ###   ########.fr       */
+/*   Updated: 2016/02/07 23:31:02 by mmouhssi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ char		**ft_strsplit(char const *s, char c)
 		length == 0 ? i++ : 0;
 		ft_tab(tab, buf, length, &j);
 	}
-	tab[j] = (char *)malloc(1);
 	tab[j] = NULL;
 	free(buf);
 	return (tab);

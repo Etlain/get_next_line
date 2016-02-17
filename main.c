@@ -6,7 +6,7 @@
 /*   By: mmouhssi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/14 11:04:32 by mmouhssi          #+#    #+#             */
-/*   Updated: 2016/01/16 16:50:36 by mmouhssi         ###   ########.fr       */
+/*   Updated: 2016/02/02 15:33:11 by mmouhssi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,20 @@
 #include <fcntl.h>
 #include "libft/libft.h"
 
-int			main()
+int main ()
+{
+	char *line;
+	int check;
+
+	check = 0;
+	while ((check = get_next_line(0, &line)) > 0)
+	{
+		printf("%s: %d\n", line, check);
+	}
+	return (0);
+}
+
+/*int			main()
 {
 	int f;
 	//int f2;
@@ -58,4 +71,4 @@ int			main()
 	while (1)
 	{
 	}
-}
+}*/
